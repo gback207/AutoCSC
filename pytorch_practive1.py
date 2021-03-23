@@ -38,3 +38,16 @@ print(x1[:,0])
 print(x1[0,:])
 #indexing 방법
 
+x5=torch.randn(4,4)
+y5=x5.view(16)
+z5=x5.view(-1,8)
+print(x5)
+print(y5)
+print(z5)
+#tensor 형태 변환
+
+x6=torch.randn(1)
+y6=x6.item()
+print(y6)
+#tensor, 숫자 변환
+

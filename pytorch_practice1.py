@@ -51,3 +51,9 @@ y6=x6.item()
 print(y6)
 #tensor, 숫자 변환
 
+x7=torch.ones(5)
+y7= x7.numpy()
+print(y7)
+z7=torch.from_numpy(y7)
+print(z7)
+#torch, numpy 변환

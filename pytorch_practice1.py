@@ -1,5 +1,6 @@
 from __future__ import print_function
 import torch
+import torch.nn.init as init
 
 #Tensor
 x1= torch.empty(5,3)
@@ -57,3 +58,20 @@ print(y7)
 z7=torch.from_numpy(y7)
 print(z7)
 #torch, numpy 변환
+
+x8=init.normal_(torch.FloatTensor(3,3), std=0.1)
+print(x8)
+y8=init.uniform_(torch.FloatTensor(3,3), a=0, b=9)
+print(y8)
+z8=init.constant_(torch.FloatTensor(3,3), 35)
+print(z8)
+#다양한 종류의 텐서 생성
+
+x9=init.normal_(torch.FloatTensor(4,4), std=1)
+print(x9)
+y9=torch.rand(4,1)
+print(y9)
+z9=torch.mm(x9,y9)
+print(z9)
+#행렬곱
+

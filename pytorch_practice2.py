@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import torch.nn.init as init
 
 x=torch.ones(3,3, requires_grad=True)
 print(x)
@@ -24,7 +25,7 @@ print(x.grad)
 
 a=torch.rand([3,3], requires_grad=True)
 print(a)
-b=a+2
+b=init.normal_(torch.FloatTensor(3,3), std=1)
 print(b)
 
 c=torch.mm(a,b)

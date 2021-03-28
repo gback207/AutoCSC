@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 x=torch.ones(3,3, requires_grad=True)
 print(x)
@@ -10,14 +11,27 @@ print(y)
 z=y*y
 print(z)
 
-'''x.requires_grad_(False)
+x.requires_grad_(False)
 print(x)
 x.requires_grad_(True)
-print(x)'''
+print(x)
 
 out=z.mean()
 
 out.backward()
 print(x.grad)
-y.backward(x)
-print(x.grad)
+
+
+a=torch.rand([3,3], requires_grad=True)
+print(a)
+b=a+2
+print(b)
+
+c=torch.mm(a,b)
+print(c)
+
+c.backward(a)
+print(a.grad)
+
+
+

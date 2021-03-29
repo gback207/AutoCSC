@@ -6,11 +6,11 @@ import torch.nn.functional as F
 class Two_Layer_Net:
     def __init__(self, input_size, hidden_size, output_size, weight_std):
         self.params={}
-        self.params['W1']=init.normal_(torch.FloatTensor(input_size,hidden_size), std=weight_std)
-        self.params['W2'] = init.normal_(torch.FloatTensor(hidden_size, output_size), std=weight_std)
+        self.params['W1']=torch.randn(input_size, hidden_size, requires_grad=True)
+        self.params['W2'] = torch.randn(hidden_size, output_size, requires_grad=True)
         self.params['b1']=torch.zeros(hidden_size)
         self.params['b2']=torch.zeros(output_size)
-        for item in self.parms:
+        for item in self.params:
             item.requires_grad(True)
 
 
@@ -28,7 +28,10 @@ class Two_Layer_Net:
 
     def loss(self,x,t):
         y=self.predict(x)
-        return torch.nn.CrossEntropyLoss(x,t)
+        a=t-x
+        b=a**2
+        return b.sum()
+
 
 
 

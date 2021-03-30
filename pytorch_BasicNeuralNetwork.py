@@ -6,12 +6,11 @@ import torch.nn.functional as F
 class Two_Layer_Net:
     def __init__(self, input_size, hidden_size, output_size, weight_std):
         self.params={}
-        self.params['W1']=torch.randn(input_size, hidden_size, requires_grad=True)
-        self.params['W2'] = torch.randn(hidden_size, output_size, requires_grad=True)
+        self.params['W1']=weight_std*torch.randn(input_size, hidden_size, requires_grad=True)
+        self.params['W2'] = weight_std*torch.randn(hidden_size, output_size, requires_grad=True)
         self.params['b1']=torch.zeros(hidden_size)
         self.params['b2']=torch.zeros(output_size)
-        for item in self.params:
-            item.requires_grad(True)
+
 
 
     def predict(self,x):

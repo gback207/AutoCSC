@@ -19,16 +19,16 @@ class Two_Layer_Net:
         b1=self.params['b1']
         b2=self.params['b2']
 
-        a1=torch.mm(W1,x)+b1
-        z1=F.sigmoid(a1)
-        a2=torch.mm(W2,z1)+b2
+        a1=torch.mm(x,W1)
+        z1=torch.sigmoid(a1)
+        a2=torch.mm(z1,W2)
         y=F.softmax(a2)
         return y
 
     def loss(self,x,t):
         y=self.predict(x)
-        a=t-x
-        b=a**2
+        a=t-y
+        b=a*a
         return b.sum()
 
 

@@ -16,9 +16,11 @@ print(input.grad)
 
 
 loss = nn.CrossEntropyLoss()
-input = torch.randn(3, 5, requires_grad=True)
+#input = torch.randn(3, 5, requires_grad=True)
+input=torch.tensor([-0.0367,  0.0254, -0.1133,  0.0329, -0.0166,  0.0250,  0.0224,  0.0963, 0.0339,  0.1319])
 print(input)
-target = torch.empty(3, dtype=torch.long).random_(5)
+#target = torch.empty(3, dtype=torch.long).random_(5)
+target=torch.tensor([0, 0, 0, 0, 0, 1, 0, 0, 0, 0])
 print(target)
 output = loss(input, target)
 print(output)

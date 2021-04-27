@@ -16,6 +16,8 @@ test_data = datasets.MNIST('./data/', train=False, transform=transforms.Compose(
     ])) # 테스트 데이터
 test_loader = torch.utils.data.DataLoader(dataset=test_data, batch_size=50, shuffle=True)
 
+print(train_data[0][0].shape)
+
 class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()

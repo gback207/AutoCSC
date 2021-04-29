@@ -49,7 +49,7 @@ optimizer = optim.Adam(cnn.parameters(), lr=0.0001)
 
 
 
-for epoch in range(10):
+for epoch in range(30):
     for key in data_dict.keys():
         pre_data= torch.from_numpy(data_dict[key][b'data'])
         data=torch.zeros(10000,3,32,32)

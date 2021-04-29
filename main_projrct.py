@@ -45,48 +45,46 @@ class CNN(nn.Module):
 
 cnn = CNN()
 criterion = torch.nn.CrossEntropyLoss()
-optimizer = optim.Adagrad(cnn.parameters(), lr=0.001)
-
-for key in data_dict.keys():
-    pre_data= torch.from_numpy(data_dict[key][b'data'])
-    data=torch.zeros(10000,3,32,32)
-    for i in range(len(pre_data)):
-        r=pre_data[i][0:1024]
-        g=pre_data[i][1024:2048]
-        b=pre_data[i][2048:3072]
-        r=r.view(32,32)
-        g=g.view(32,32)
-        b=b.view(32,32)
-        data[i][0]=r
-        data[i][1]=g
-        data[i][2]=b
+optimizer = optim.Adam(cnn.parameters(), lr=0.0001)
 
 
-    print(data[0].shape)
 
-    pre_labels=data_dict[key][b'labels']
+for epoch in range(10):
+    for key in data_dict.keys():
+        pre_data= torch.from_numpy(data_dict[key][b'data'])
+        data=torch.zeros(10000,3,32,32)
+        for i in range(len(pre_data)):
+            r=pre_data[i][0:1024]
+            g=pre_data[i][1024:2048]
+            b=pre_data[i][2048:3072]
+            r=r.view(32,32)
+            g=g.view(32,32)
+            b=b.view(32,32)
+            data[i][0]=r
+            data[i][1]=g
+            data[i][2]=b
 
 
-    labels=torch.zeros(100,100, dtype=torch.long)
-    batch_data= torch.zeros(100,100,3,32,32)
-    for i in range(100):
-        for j in range(100):
-            batch_data[i][j]= data[i*100+j]
-            labels[i][j]=pre_labels[i*100+j]
+        pre_labels=data_dict[key][b'labels']
 
 
-    print(batch_data[26].shape)
-    print(labels[36].shape)
+        labels=torch.zeros(100,100, dtype=torch.long)
+        batch_data= torch.zeros(100,100,3,32,32)
+        for i in range(100):
+            for j in range(100):
+                batch_data[i][j]= data[i*100+j]
+                labels[i][j]=pre_labels[i*100+j]
 
 
-    cnn.train()
-    for i in range(100):
-        optimizer.zero_grad()
-        output=cnn(batch_data[i])
-        target=labels[i]
-        loss = criterion(output, target)
-        loss.backward()
-        optimizer.step()
+
+        cnn.train()
+        for i in range(100):
+            optimizer.zero_grad()
+            output=cnn(batch_data[i])
+            target=labels[i]
+            loss = criterion(output, target)
+            loss.backward()
+            optimizer.step()
         print(loss)
 
 

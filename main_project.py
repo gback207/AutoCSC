@@ -45,11 +45,11 @@ class CNN(nn.Module):
 
 cnn = CNN()
 criterion = torch.nn.CrossEntropyLoss()
-optimizer = optim.Adam(cnn.parameters(), lr=0.0001)
+optimizer = optim.Adagrad(cnn.parameters(), lr=0.001)
 
 
 
-for epoch in range(30):
+for epoch in range(5):
     for key in data_dict.keys():
         pre_data= torch.from_numpy(data_dict[key][b'data'])
         data=torch.zeros(10000,3,32,32)
@@ -74,6 +74,7 @@ for epoch in range(30):
             for j in range(100):
                 batch_data[i][j]= data[i*100+j]
                 labels[i][j]=pre_labels[i*100+j]
+
 
 
 

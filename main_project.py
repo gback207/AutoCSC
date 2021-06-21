@@ -7,6 +7,10 @@ import numpy as np
 import os
 import pickle
 import torch.optim as optim
+from torch import cuda
+
+print(cuda.is_available())
+device = 'cuda' if cuda.is_available() else 'cpu'
 
 
 def unpickle(file):
@@ -27,6 +31,7 @@ ft=unpickle(r'C:\Users\brian\OneDrive\바탕 화면\cifar-10-python (1).tar\cifa
 pre_test_data=torch.from_numpy(ft[b'data'])
 pre_test_labels=ft[b'labels']
 
+
 test_data=torch.zeros(10000,3,32,32)
 for i in range(len(pre_test_data)):
     r=pre_test_data[i][0:1024]
@@ -44,8 +49,6 @@ for i in range(100):
     for j in range(100):
         test_batch_data[i][j]=test_data[i*100+j]
         test_labels[i][j]=pre_test_labels[i*100+j]
-
-
 batchdict={}
 for key in data_dict.keys():
     pre_data= torch.from_numpy(data_dict[key][b'data'])
@@ -60,11 +63,7 @@ for key in data_dict.keys():
         data[i][0]=r
         data[i][1]=g
         data[i][2]=b
-
-
     pre_labels=data_dict[key][b'labels']
-
-
     labels=torch.zeros(100,100, dtype=torch.long)
     batch_data= torch.zeros(100,100,3,32,32)
     for i in range(100):
@@ -84,20 +83,22 @@ class CNN(nn.Module):
         self.bn2 = nn.BatchNorm2d(50)
         self.bn3= nn.BatchNorm1d(500)
         self.bn4=nn.BatchNorm1d(10)
+        self.drop2d=nn.Dropout2d(p=0.15)
+        self.drop=nn.Dropout(p=0.15)
 
 
 
 
     def forward(self, x):
-        x = F.relu(self.bn1(self.conv1(x)))
+        x = F.relu(self.drop2d(self.bn1(self.conv1(x))))
         x = F.max_pool2d(x, kernel_size=2, stride=2)
-        x = F.relu(self.bn2(self.conv2(x)))
+        x = F.relu(self.drop2d(self.bn2(self.conv2(x))))
         x = F.max_pool2d(x, kernel_size=2, stride=2)
 
         x = x.view(-1, 5 * 5 * 50)
-        x = F.relu(self.bn3(self.fc1(x)))
-        x = F.relu(self.bn4(self.fc2(x)))
-        return F.log_softmax(x, dim=1)
+        x = F.relu(self.drop(self.bn3(self.fc1(x))))
+        x = F.relu(self.drop(self.bn4(self.fc2(x))))
+        return x
 
 
 cnn = CNN()
@@ -108,7 +109,7 @@ optimizer = optim.Adagrad(cnn.parameters(), lr=0.001)
 loss_list=[]
 accuracy_list=[]
 
-for epoch in range(300):
+for epoch in range(5):
     for key in data_dict.keys():
         cnn.train()
         for i in range(100):
@@ -133,3 +134,13 @@ for epoch in range(300):
 
         print(counter/10000)
         accuracy_list.append(counter/10000)
+
+
+
+
+
+torch.save(cnn, r'C:\Users\brian\OneDrive\바탕 화면\한과영 기타\IDEV\AutoCSC\cnn4.pt')
+
+
+print(loss_list)
+print(accuracy_list)
